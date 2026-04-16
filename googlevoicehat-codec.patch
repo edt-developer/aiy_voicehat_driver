@@ -1,0 +1,16 @@
+--- a/googlevoicehat-codec.c
++++ b/googlevoicehat-codec.c
+@@ -136,6 +136,10 @@
+ 	.capture = {
+ 		.stream_name = "HiFi Capture",
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_48000,
+-		.formats = SNDRV_PCM_FMTBIT_S32_LE
++		/* ICS43432 mics produce 24-bit left-justified data.
++		 * S24_LE = 24-bit in 32-bit container (upper 24 bits data,
++		 * lower 8 bits padding). Fixes recordings being ~40dB too quiet. */
++		.formats = SNDRV_PCM_FMTBIT_S24_LE
+ 	},
+ 	.playback = {
+ 		.stream_name = "HiFi Playback",
