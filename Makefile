@@ -33,10 +33,11 @@ MODULE_INSTALL_COMPRESSED_PATH := $(MODULE_INSTALL_PATH).xz
 MODULE_INSTALL_BACKUP_PATH := $(MODULE_INSTALL_COMPRESSED_PATH).bak
 
 CODEC_MODULE_NAME := snd_soc_googlevoicehat_codec
+BUILT_CODEC_MODULE_NAME := $(subst -,_,$(MODULE_NAME))
 SOUNDCARD_MODULE_NAME := snd_soc_rpi_simple_soundcard
 STOP_AUDIO_SERVICES := pipewire.socket pipewire wireplumber
 START_AUDIO_SERVICES := pipewire.service wireplumber.service
-CODEC_RUNTIME_MODULE_NAMES := googlevoicehat_codec $(CODEC_MODULE_NAME)
+CODEC_RUNTIME_MODULE_NAMES := $(BUILT_CODEC_MODULE_NAME) $(CODEC_MODULE_NAME)
 
 SOURCE_TREE_ARTIFACTS := \
 	$(MODULE_SOURCE_DIR)/..module-common.o.cmd \
@@ -206,6 +207,7 @@ install: build backup
 	$(SLEEP) 2
 	$(SUDO) modprobe -r $(SOUNDCARD_MODULE_NAME) || true
 	$(SUDO) modprobe -r $(CODEC_MODULE_NAME) || true
+	$(SUDO) modprobe -r $(BUILT_CODEC_MODULE_NAME) || true
 	$(SUDO) rm -f "$(MODULE_INSTALL_COMPRESSED_PATH)"
 	$(SUDO) cp "$(BUILD_MODULE_PATH)" "$(MODULE_INSTALL_PATH)"
 	$(SUDO) depmod -a
