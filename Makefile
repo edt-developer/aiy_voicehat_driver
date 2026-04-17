@@ -1,6 +1,6 @@
-# Last Modified: 2026-04-17 13:24:00
+# Last Modified: 2026-04-17 13:31:00
 # Modified By: Codex (GPT-5)
-# Description: Build the Voice HAT kernel module inside a dedicated build folder and add clean/install/status verification targets that follow the README workflow with clearer install-phase logging and non-fatal user-service stop failures.
+# Description: Build the Voice HAT kernel module inside a dedicated build folder and add clean/install/status verification targets that follow the README workflow with clearer install-phase logging and non-fatal user-service stop/start failures.
 
 ifneq ($(KERNELRELEASE),)
 obj-m += googlevoicehat-codec.o
@@ -211,7 +211,9 @@ install: build backup
 	$(SUDO) depmod -a
 	$(SUDO) modprobe $(CODEC_MODULE_NAME)
 	$(SUDO) modprobe $(SOUNDCARD_MODULE_NAME)
-	$(SYSTEMCTL_USER) start $(START_AUDIO_SERVICES)
+	@if ! $(SYSTEMCTL_USER) start $(START_AUDIO_SERVICES); then \
+		echo "Warning: failed to start one or more user audio services ($(START_AUDIO_SERVICES)); continuing install"; \
+	fi
 	$(SLEEP) 2
 	@echo "== AIY Voice HAT make status =="
 	$(MAKE) status
