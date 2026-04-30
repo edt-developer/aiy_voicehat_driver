@@ -35,11 +35,11 @@ dtoverlay=googlevoicehat-soundcard
 
 ### Option 1. use the installer script (recommended):
 ```bash
-cd /home/kellyk/hdmi_capture/src/aiy_voicehat_driver
-./install.sh
+make build
+sudo make install
 ```
 
-### Option 2. build manually:
+### Option 2. build manually - *** THIS IS OLD, THE MAKEFILE NOW DOES ALL THIS***
 
 Prerequisites (already installed on this system):
 ```
@@ -48,7 +48,6 @@ sudo apt install linux-headers-$(uname -r)
 
 Build:
 ```bash
-cd /home/kellyk/hdmi_capture/src/aiy_voicehat_driver
 make
 ```
 
@@ -156,7 +155,6 @@ patch googlevoicehat-codec.c < googlevoicehat-codec.patch
 
 When you update the kernel, the module path changes and you need to rebuild:
 ```bash
-cd /home/kellyk/hdmi_capture/src/aiy_voicehat_driver
 make clean
 make
 # Then follow the "Installing the Module" steps above again
