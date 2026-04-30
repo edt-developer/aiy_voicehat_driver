@@ -39,7 +39,7 @@ make build
 sudo make install
 ```
 
-### Option 2. build manually - *** THIS IS OLD, THE MAKEFILE NOW DOES ALL THIS***
+### Option 2. build manually - *** EVERYTHING BELOW HERE IS OLD, THE MAKEFILE NOW DOES ALL THIS***
 
 Prerequisites (already installed on this system):
 ```
