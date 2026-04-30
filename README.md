@@ -17,7 +17,29 @@ container (upper 24 bits = data, lower 8 bits = padding), shifting it properly.
 
 ---
 
+## Prerequisites
+
+1. Check /boot/firmware/config.txt and make sure the Voice HAT overlay is enabled:
+
+```
+dtoverlay=googlevoicehat-soundcard
+```
+
+2. Ensure there is not another overlay that conflicts with the googlevoicehat overlay (e.g. `hifiberry-dac`). I believe its only the I2S pins that conflict, so you might be able to use a different sound card if it doesn't also use the I2S mics. But I haven't tested this.
+
+3. To gain control over the mic levels, you probably need wireplumber, pipewire.
+
+4. Note: this sound card also has a I2S DAC output for a speaker or headphones.
+
 ## Building the Module
+
+### Option 1. use the installer script (recommended):
+```bash
+cd /home/kellyk/hdmi_capture/src/aiy_voicehat_driver
+./install.sh
+```
+
+### Option 2. build manually:
 
 Prerequisites (already installed on this system):
 ```
@@ -76,6 +98,7 @@ sudo modprobe snd_soc_rpi_simple_soundcard
 systemctl --user start pipewire.service wireplumber.service
 sleep 2
 ```
+### Better to reboot at this point! This ensures the new module is loaded properly and all services are restarted cleanly.
 
 ### Step 5: Verify
 ```bash
